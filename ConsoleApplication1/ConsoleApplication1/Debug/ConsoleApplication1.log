@@ -1,7 +1,0 @@
-﻿  Corrector.cpp
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(33): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(52): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(128): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(131): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  ConsoleApplication1.vcxproj -> E:\programming\Practic\ConsoleApplication1\Debug\ConsoleApplication1.exe
-  ConsoleApplication1.vcxproj -> E:\programming\Practic\ConsoleApplication1\Debug\ConsoleApplication1.pdb (Full PDB)
