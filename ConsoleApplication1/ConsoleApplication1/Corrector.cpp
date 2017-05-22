@@ -8,39 +8,36 @@ Corrector::Corrector()
 
 void Corrector::open(const char *file_name)
 {
-	wifstream fin(file_name, ios_base::binary | ios_base::in);
-	if (!fin.is_open()) // если файл не открыт
-		cout << "Файл не может быть открыт!\n";
-	else
+	FILE *file = fopen(file_name, "rb");
+	if (file == NULL)
 	{
-		struct stat file;
-		stat(file_name, &file);
-		n = file.st_size;
-		if (1 == (n & 1))
-		{
-			cout << "Ошибка в файле считывания" << endl;
-		}
-		text.resize(n);
-		fin.read(text.data(), n);
+		fputs("Ошибка файла", stderr);
+		exit(1);
 	}
-	fin.close();
-	vector<wchar_t> text2;
-	for (int i = 0; i < n; i = i + 2)
+	fseek(file, 0, SEEK_END);                          
+	long lSize = ftell(file);                           
+	rewind(file);
+	text.resize(lSize/2);
+	if (text.data() == NULL)
 	{
-		text2.push_back(text[i] + text[i + 1]);
+		fputs("Ошибка памяти", stderr);
+		exit(2);
 	}
-	text.clear();
-	for (int i = 0; i < text2.size(); i++)
+	size_t result = fread(text.data(), 1, lSize, file);
+	if (result != lSize)
 	{
-		text.push_back(text2[i]);
+		fputs("Ошибка чтения", stderr);
+		exit(3);
 	}
+	fclose(file);
+	
 }
 
 void Corrector::write()
 {
-	wofstream file("2.txt", ios_base::binary | ios_base::out);
-	file.write(text.data(), n);
-	file.close();
+	FILE * ptrFile = fopen("2.txt", "wb");
+	fwrite(text.data(), 2, text.size(), ptrFile);
+	fclose(ptrFile);
 }
 
 void Corrector::Find()
@@ -78,28 +75,14 @@ void Corrector::Find2()
 void Corrector::Create_dictionary()
 {
 	vector<wchar_t> Intermediate_word;
-	for (int i = 2; i < n; i++)
+	for (int i = 1; i < text.size(); i++)
 	{
-		if (i == (n - 5) && text[i] != '\r')
-		{
-			for (; i < n; i++)
-			{
-				Intermediate_word.push_back(text[i]);
-				suggest Last_word;
-				Last_word.word.resize(Intermediate_word.size());
-				Last_word.word = Intermediate_word;
-				Last_word.weght = Intermediate_word.size();
-				dictionary.push_back(Last_word);
-				Intermediate_word.clear();
-			}
-			break;
-		}
-		
-		if (text[i] != '\r' && text[i+1] != 0 && text[i+2] != '\n' && text[i+3] != '\0')
+		if (!iswcntrl(text[i]))
 		{
 			Intermediate_word.push_back(text[i]);
 		}
 		else
+		if(Intermediate_word.size() > 0)
 		{
 			suggest Last_word;
 			Last_word.word.resize(Intermediate_word.size());
@@ -109,6 +92,12 @@ void Corrector::Create_dictionary()
 			Intermediate_word.clear();
 		}
 	}
+	suggest Last_word;
+	Last_word.word.resize(Intermediate_word.size());
+	Last_word.word = Intermediate_word;
+	Last_word.weght = Intermediate_word.size();
+	dictionary.push_back(Last_word);
+	Intermediate_word.clear();
 }
 
 void Corrector::Number_words()

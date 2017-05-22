@@ -1,7 +1,11 @@
 ﻿  Corrector.cpp
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(33): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(52): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(128): warning C4018: '<': signed/unsigned mismatch
-e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(131): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(11): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(38): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(49): warning C4018: '<': signed/unsigned mismatch
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(78): warning C4018: '<': signed/unsigned mismatch
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(133): warning C4018: '<': signed/unsigned mismatch
+e:\programming\practic\consoleapplication1\consoleapplication1\corrector.cpp(136): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   ConsoleApplication1.vcxproj -> E:\programming\Practic\ConsoleApplication1\Debug\ConsoleApplication1.exe
   ConsoleApplication1.vcxproj -> E:\programming\Practic\ConsoleApplication1\Debug\ConsoleApplication1.pdb (Full PDB)

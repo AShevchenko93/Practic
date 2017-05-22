@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <locale.h>
 #include <Windows.h>
 #include <sys/stat.h>
 #include "Corrector.h"
@@ -21,12 +22,11 @@ suggest get_suggetion(wchar_t *target, wchar_t **base)
 
 int main()
 {
-	setlocale(0, "");
 	Corrector base;
 	const char file[] = { "1.txt" };
 	base.open(file);
 	base.write();
-	//base.Create_dictionary();
+	base.Create_dictionary();
 	//base.Number_words();
 	//base.Reciving_word();
 	//base.Find();

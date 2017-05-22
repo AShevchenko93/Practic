@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 #include <sys/stat.h>
 using namespace std;
 struct suggest
