@@ -31,6 +31,21 @@ void Corrector::open(const char *file_name)
 	}
 	fclose(file);
 	
+	/*wifstream fs_in(file_name, ios::binary);
+	int size = 0;
+	fs_in.seekg(0, ios::end);
+	size = fs_in.tellg();
+	if (size & 1)
+	{
+		cerr << "Ошибка в исходном файле" << endl;
+	}
+	text.resize(size / 2);
+	fs_in.clear();
+	fs_in.seekg(0, ios::beg);
+	// apply BOM-sensitive UTF-16 facet
+	fs_in.imbue(locale(fs_in.getloc(), new codecvt_utf16<wchar_t, 0x10ffff, consume_header>));
+	fs_in.read(text.data(), text.size());
+	fs_in.close();*/
 }
 
 void Corrector::write()
@@ -42,29 +57,31 @@ void Corrector::write()
 
 void Corrector::Find()
 {
-	int length_word = text.size();
-	vector<int> Concurrences;
+	int length_word = text.size() - 1;
+	int n = dictionary.size();
 	vector<int> pos;
-	int k = 0;
-	for (int i = 0; i < dictionary.size(); i++)
+	for (int i=0; i < n; i++)
 	{
-		if (dictionary[i].weght == length_word)
+		int k = dictionary[i].word.size();
+		if ((k - 2) < length_word && (k + 2) > length_word)
 		{
-			pos.push_back(i);
-			Concurrences.push_back(0);
-			for (int j = 0; j << dictionary[i].weght;j++)
+			bool flag = false;
+			for (int j = 0; j < (text.size()-1) && j < k; j++)
 			{
-				if (dictionary[i].word[j] == text[j])
+				if (dictionary[i].word[j] == text[j+1])
 				{
-					Concurrences[k]++;
-					
+					dictionary[i].weght++;
+					flag = true;
 				}
 			}
-			k++;
+			if(flag) pos.push_back(i);
 		}
 	}
-	if (pos.size() > 0)Suggest_word(pos, Concurrences);
-	cout << "Количество совпадений: " << pos.size() << endl;;
+	if (pos.size() > 0)
+	{
+		Suggest_word(pos);
+		Write_suggest_word();
+	}
 }
 
 void Corrector::Find2()
@@ -77,9 +94,10 @@ void Corrector::Create_dictionary()
 	vector<wchar_t> Intermediate_word;
 	for (int i = 1; i < text.size(); i++)
 	{
-		if (!iswcntrl(text[i]))
+		wchar_t Intermediate_character = text[i];
+		if (!iswcntrl(Intermediate_character))
 		{
-			Intermediate_word.push_back(text[i]);
+			Intermediate_word.push_back(Intermediate_character);
 		}
 		else
 		if(Intermediate_word.size() > 0)
@@ -87,7 +105,7 @@ void Corrector::Create_dictionary()
 			suggest Last_word;
 			Last_word.word.resize(Intermediate_word.size());
 			Last_word.word = Intermediate_word;
-			Last_word.weght = Intermediate_word.size();
+			Last_word.weght = 0;
 			dictionary.push_back(Last_word);
 			Intermediate_word.clear();
 		}
@@ -100,30 +118,35 @@ void Corrector::Create_dictionary()
 	Intermediate_word.clear();
 }
 
-void Corrector::Number_words()
-{
-	cout << "Количество слов в словаре: "<< dictionary.size()+1 << endl;
-}
-
 void Corrector::Reciving_word()
 {
+	text.clear();
 	open("Reciving_word.txt");
-	write();
 }
 
-void Corrector::Suggest_word(vector<int> pos, vector<int> number)
+void Corrector::Suggest_word(vector<int> pos)
 {
-	wofstream file("Suggest_word.txt", ios_base::binary | ios_base::out);
 	for (int i = 0; i < pos.size(); i++)
 	{
 		float chance;
-		chance = number[i] / dictionary[pos[i]].weght;
-		if (chance > 60)
+		chance = (float)dictionary[pos[i]].weght/(float)dictionary[pos[i]].word.size();
+		if (chance > 0.6)
 		{
-			file.write(dictionary[pos[i]].word.data(), dictionary[pos[i]].weght);
+			for (int j = 0; j < dictionary[pos[i]].word.size(); j++)
+			{
+				find_word.push_back(dictionary[pos[i]].word[j]);
+			}
+			find_word.push_back('\r');
+			find_word.push_back('\n');
 		}
 	}
-	file.close();
+}
+
+void Corrector::Write_suggest_word()
+{
+	FILE * ptrFile = fopen("Suggest_word.txt", "wb");
+	fwrite(find_word.data(), 2, find_word.size(), ptrFile);
+	fclose(ptrFile);
 }
 
 
