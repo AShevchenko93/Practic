@@ -1,12 +1,5 @@
 #include "Corrector_lite.h"
 
-/*class corrector_answer
-{
-vector<wchar_t> find_word;
-
-};*/
-
-//typedef 
 
 
 
@@ -68,54 +61,8 @@ void Corrector_lite::Create_dictionary()
 	}
 }
 
-/*void Corrector_lite::Receiving_word(vector<wchar_t> word)
-{
-	Research_word = word;
-}*/
 
-/*void Corrector_lite::Receiving_word(const wchar_t *word)
-{
-	Research_word1 = word;
-}*/
-
-/*void Corrector_lite::Find()
-{
-	int length_word = Research_word.size();//тут нужно будет отнять 1 если считывалось с файла
-	int n = dictionary.size();
-	vector<int> pos;
-	for (int i = 0; i < n; i++)
-	{
-		int k = dictionary[i].length;
-		if ((k - 2) < length_word && (k + 2) > length_word)
-		{
-			bool flag = false;
-			int temporary_weight=0;
-			for (int j = 0; j < (Research_word.size()) && j < k; j++)
-			{
-				wchar_t *test_word = dictionary[i].word;
-				if ((*(test_word+j)) == Research_word[j])//тут +1 к индексу text если считывалось с файла
-				{
-					temporary_weight++;
-					flag = true;
-				}
-			}
-			if (flag)
-			{
-				answer qw;
-				qw.pos = i;
-				qw.weght = temporary_weight;
-				position.push_back(qw);
-			}
-		}
-	}
-	if (position.size() > 0)
-	{
-		Sort_answer();
-		Suggest_word();
-	}
-}*/
-
-vector<suggest> Corrector_lite::Find2(const wchar_t *word,int length_word)
+vector<suggest> Corrector_lite::Find(const wchar_t *word,int length_word)
 {
 	vector<suggest> find_word;
 	vector<answer> position;
@@ -166,41 +113,6 @@ vector<suggest> Corrector_lite::Find2(const wchar_t *word,int length_word)
 	return find_word;
 }
 
-/*void Corrector_lite::Suggest_word()
-{
-	find_word.clear();
-	for (int i = 0; i < position.size(); i++)
-	{
-		float chance;
-		chance = (float)position[i].weght / (float)dictionary[position[i].pos].length;
-		if (chance > 0.6)
-		{
-			for (int j = 0; j < dictionary[position[i].pos].length; j++)
-			{
-				find_word.push_back(dictionary[position[i].pos].word[j]);
-			}
-
-			find_word.push_back('\r');
-			find_word.push_back('\n');
-		}
-	}
-	position.clear();
-}*/
-
-/*void Corrector_lite::Suggest_word2(vector<suggest> find_word)
-{
-	find_word.clear();
-	for (int i = 0; i < position.size(); i++)
-	{
-		float chance;
-		chance = (float)position[i].weght / (float)dictionary[position[i].pos].length;
-		if (chance > 0.6)
-		{
-				find_word.push_back(dictionary[position[i].pos]);
-		}
-	}
-	position.clear();
-}*/
 
 void Corrector_lite::Sort_answer(vector<answer> position)
 {
@@ -208,16 +120,7 @@ void Corrector_lite::Sort_answer(vector<answer> position)
 	if(number_find_word < position.size())
 		position.resize(number_find_word);
 }
-/*
-vector<wchar_t> Corrector_lite::Answer_return()
-{
-	return find_word;
-}*/
 
-/*vector<suggest> Corrector_lite::Answer_return1()
-{
-	return find_word;
-}*/
 
 Corrector_lite::~Corrector_lite()
 {
